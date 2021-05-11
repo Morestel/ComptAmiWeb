@@ -1,0 +1,47 @@
+/* CSS PARTIE TEAM */
+
+.main_team{
+  position: relative;
+  top: 20%;
+}
+
+.accordion {
+  background-color: #6bb6e4;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+}
+
+.active, .accordion:active{
+  background-color: #0f1923;
+}
+
+.accordion:hover{
+  background-color: #f0cc3e;
+}
+
+.panel{
+  background-color: #0f1923;
+  padding: 0 18px;
+  color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.logo-jeu img{
+  position: absolute;
+  width: 40px;
+  margin-top: -30px;
+  right: 3%;
+}
+
+.panel span{
+  font-weight: bold;
+  font-style: italic;
+}

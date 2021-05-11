@@ -1,0 +1,192 @@
+/* Partie sur les comptes - Inscription / Connexion */
+
+/* Bouton inscription */
+.box_accounti{
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  font-size: 1.2em;
+}
+
+/* Bouton connexion */
+.box_accountc{
+  position: absolute;
+  top: 25%;
+  left: 45%;
+  font-size: 1.2em;
+}
+
+/* Texte des boutons connexions & inscriptions*/
+.box_accounti a, .box_accountc a{
+  text-decoration: none;
+  color: white;
+}
+
+/* Style des boutons */
+.bouton{
+  border: none;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  color: #eeeeee;
+  font-weight: 600;
+  font-size: 15px;
+  background-color: #6bb6e4;
+  padding: 15px 50px;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+/* Remettre le texte par dessus après effet */
+.bouton span{
+  position: relative;
+  z-index: 1;
+}
+
+/* Effet des boutons */
+.bouton:after{
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 470%;
+  width: 160%;
+  background: #f0cc3e;
+  transition: all .5s ease-in-out;
+  transition: all .5s ease . -in-out;
+  transform: translateX(-100%) translateY(-25%) rotate(45deg);
+  transform: translateX(-100%) translateY(-25%) rotate(45deg);
+}
+
+/* Effet des boutons après survol*/
+.bouton:hover:after{
+  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+  transform: translateX(-9%) translteY(-25%) rotate(45deg);
+}
+
+
+/* Formulaire d'inscription / Connexion */
+.login-box {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background-image: url("https://mira2.univ-st-etienne.fr/~mt05697s/projet/img/src/MADLION.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 5px 10px rgba(0,0,0,.6);
+  border-radius: 10px;
+  text-align:center;
+}
+
+.login-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input{
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+
+.login-box .user-box label{
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .6s;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label{
+  top: -20px;
+  left: 0;
+  color: #f0cc3e;
+  font-size: 12px;
+}
+
+.login-box form .bouton_valid {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background: #2084d6;
+  color: #f0cd0a;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .6s;
+  letter-spacing: 1px;
+  border-radius: 5px;             
+}
+
+.login-box form .bouton_invalid{
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background: #7d7d7d;
+  color: #fff;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  letter-spacing: 1px;
+  border-radius: 5px;
+  border: none;
+}
+
+.login-box .bouton_valid:hover {
+  background: #f0cd0a;
+  color: #2084d6;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+}
+
+.login-box .alt_co{
+  position: relative;
+  text-decoration: none;
+  top: 13px;
+  color: #ffffff;
+}
+
+#form_code .code{
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+#code1, #code2, #code3, #code4{
+  width: 10%;
+  margin: 3%;
+}

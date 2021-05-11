@@ -1,0 +1,278 @@
+/* Partie NEWS */
+
+.news{
+  position: relative;
+  text-align: center;
+  top: 5%;
+  width: 100%;
+  height: 60%;
+  text-decoration: none;
+}
+
+.news h2{
+  color: #4287f5;
+}
+
+.list_news{
+  position: relative;
+  left: 13%;
+  width: 100%;
+}
+
+.news ul{
+  list-style: none;
+  display: inline;
+  margin:0;
+  padding:0;
+  width: 100%;
+  height: 100%;
+}
+
+.news li{
+  float: left;
+}
+
+.news-body{
+    position: relative;
+    text-align: center;
+    top: 5%;
+    width: 90%;
+    height: 100%;
+    margin:auto;
+}
+
+.news-body ul{
+    position:relative;
+    margin:0;
+    padding:0;
+    width: 100%;
+    height: 100%;
+}
+
+.news-body ul li{
+    list-style:none;
+    float:left;
+}
+
+.options{
+    position:absolute;
+    right:10%;
+    top : 25%;
+}
+
+.article{
+    position:relative;
+}
+
+.full-news-box{
+  width: 250px;
+  height: 400px;
+  border: 2px solid #53c8ea;
+  margin: 20px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  box-shadow: 10px 14px 14px -5px rgba(0,0,0,0.46);
+}
+
+.news-box{
+  position: relative;
+  width: 100%;
+  height: 60%;
+}
+
+.news-box h3{
+  position: absolute;
+  left: 6%;
+  top: 15%;
+  margin: 0;
+  font-family: "Roboto", Helvetica, arial;
+  font-weight: 850;
+  font-size: 20px;
+  color: #fff;
+}
+
+
+.news-box:hover h3{
+  color: #53c8ea;
+}
+
+.filtre{
+  position: absolute;
+  top: 0;
+  width: inherit;
+  height: 100%;
+  background-color: #253454;
+  opacity: 0.5;
+}
+
+.news-box-text{
+  position: relative;
+  background-color: #777777;
+  font-family: "Roboto";
+  font-size: 0.8em;
+  color: #fff;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 40%;
+  text-decoration: none;
+  text-align: left;
+  padding-left: 5px;
+  padding-top: 2px;
+  border-bottom: 2px solid #53c8ea;
+}
+
+.ajout{
+  position: relative;
+  left: -45%;
+  width: 25px;
+}
+
+affiche_page{
+  position: relative;
+  left: -45%;
+  font-weight: bold;
+}
+
+/* Partie sur l'ajout de news */
+
+.miniature{
+  width: 100%;
+  height: 25vw;
+  max-height: 25vw;
+  position : relative;
+  border-radius : 5px;
+  overflow : hidden;
+  background : rgb(112, 167, 255);
+  background-repeat:no-repeat;
+  background-size: cover;
+  background-position:center center;
+}
+.filtre_miniature{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background : rgba(94,125,191,0.5);
+}
+
+
+#titre,#upload_img,#upload_miniature{
+  display:none;
+}
+
+#titre_view{
+  position : absolute;
+  max-width:80%;
+  min-width:10%;
+  max-height:90%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  font-family: "Roboto";
+  font-size: 4em;
+  text-align: center;
+  margin:0;
+  overflow-wrap: break-word;
+  text-transform: uppercase;
+}
+
+
+h2{
+  margin:0;
+}
+
+.ajout_miniature{
+  position:absolute;
+  bottom:0;
+  left:0;
+  height:2vw;
+  width:2vw;
+  background-image:url('https://mira2.univ-st-etienne.fr/~mt05697s/projet/img/src/bouton_insert_image.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+#contenu{
+  display:none;
+}
+
+.paragraphe{
+  font-size: 1.5em;
+}
+
+
+#box_contenu{
+  margin-top: 20px;
+  width:100%;
+  min-height:10%;
+  font-size:1.3em;
+  overflow-wrap: break-word;
+  text-align:left;
+  background:white;
+}
+
+#box_contenu img{
+  max-width:70%;
+  text-align:center;
+}
+
+#box_contenu div{
+  width:100%;
+}
+
+.outils{
+  position:fixed;
+  right:5%;
+  bottom:30%;
+}
+
+.outils ul{
+  list-style: none;
+}
+
+.outils img{
+  width: 40px;
+}
+
+.outils button{
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#logo-gif{
+  position: fixed;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+#submit_button{
+  position: fixed;
+  top: 70%;
+  right: 3%;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #0d2b49;
+  font-family: "Roboto";
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .4s;
+  margin: 10px;
+  border: 1px #0d2b49 solid;
+}
+
+#submit_button:hover{
+  background-color: #0d2b49;
+  color: #fff;
+  border: 1px #fff solid;
+  cursor: pointer;
+}
