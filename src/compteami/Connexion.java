@@ -1,18 +1,22 @@
 package compteami;
 
 import java.sql.*;
+import java.util.ArrayList;
 // import java.util.Date;
+import java.util.List;
 
 public class Connexion {
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    /*
     private final String JDBC_CONNEXION = "jdbc:mysql://localhost:4456/mt05697s";
     private final String JDBC_USER = "mt05697s";
     private final String JDBC_PWD = "3RSHLEL7";
-    /*
+    */
+    
     private final String JDBC_CONNEXION = "jdbc:mysql://localhost/mydb";
     private final String JDBC_USER = "root";
     private final String JDBC_PWD = "";
-    */
+    
     Connection c;
     private Statement ts;
 
@@ -42,7 +46,7 @@ public class Connexion {
      * Fonction d'inscription d'un utilisateur (Les informations seront verifiees anterieurement)
      * @param user Utilisateur a inscrire
      */
-    public void Inscription(Utilisateur user){
+    public boolean Inscription(Utilisateur user){
         if (!this.Authentification(user)){ // On empêche que deux personnes ayant les mêmes infos s'inscrivent 
             String requete = "INSERT INTO `utilisateur` (`Prenom`, `Nom`, `Password`, `est_admin`) VALUES (" + 
                                 user.getPrenom() + "," + 
@@ -62,7 +66,9 @@ public class Connexion {
             }catch(SQLException e){
                 e.printStackTrace();
             }
+            return true;
         }
+        return false;
     }
 
     /**
@@ -85,6 +91,7 @@ public class Connexion {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+       
         return false;
     }
 
@@ -165,6 +172,24 @@ public class Connexion {
         }catch(SQLException e){
             e.printStackTrace();
         }
+    }
+    
+    public List<Message> ChargerMessagerie(int id_event){
+    	List<Message> m = new ArrayList<>();
+    	String query = "SELECT Contenu, Id_user, Date_envoie FROM Messagerie WHERE Id_event = " + id_event;
+        try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){
+                Message mess = new Message(resultat.getString(1),
+                                            Integer.parseInt(resultat.getString(2)),
+                                            resultat.getString(3)
+                );
+                m.add(mess);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return m;
+    	
     }
 
     public void InsererMessage(Evenement event, Message mess){

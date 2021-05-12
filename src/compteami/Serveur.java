@@ -3,7 +3,6 @@ package compteami;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import javax.swing.JFrame;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -24,29 +23,12 @@ public class Serveur extends Thread{
 	static ArrayList<Utilisateur> listeUser = new ArrayList<Utilisateur>();
 	static ArrayList<Session> listeSession = new ArrayList<Session>();
 	static boolean lancer = false;
+	
 	public static ArrayList<Session> getListeSession() {
 		return Serveur.listeSession;
 	}
 	
-	
-	public static void main(String[] args) throws IOException{
-		final int PORT = 8001;
-        ServerSocket server = new ServerSocket(PORT);
-        System.out.println("En attende de client...");
-        while(true){
-            Socket s = server.accept();
-            try{
-                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                PrintWriter out = new PrintWriter(s.getOutputStream());
-                String ligne;
-                ligne = in.readLine();
-                System.out.println(ligne);
-            }catch(IOException e){}
-            s.close();
 		
-	}
-	}
-	
 	public void run() {
 		final int PORT = 8001;
 		try {
@@ -59,7 +41,7 @@ public class Serveur extends Thread{
                 PrintWriter out = new PrintWriter(s.getOutputStream());
                 String ligne;
                 ligne = in.readLine();
-                gerer_requete(ligne);
+                //gerer_requete(ligne);
             }catch(IOException e){}
             s.close();
 		
@@ -73,11 +55,6 @@ public class Serveur extends Thread{
 	public synchronized void handleOpen(Session s) {
 		listeSession.add(s);
 		System.out.println("Client connecté");
-		try {
-			s.getBasicRemote().sendText("Changement");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		if (!lancer) {
 			start();
@@ -88,9 +65,28 @@ public class Serveur extends Thread{
 
 	@OnMessage
 	public String handleMessage(Session session, String message){ 
-		
-		gerer_requete(message);
-		return "";
+		//gerer_requete(message);
+		System.out.println(message);
+		/*
+		if (gerer_requete(message)) {
+			try {
+				session.getBasicRemote().sendText("true");
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		else {
+			try {
+				
+				session.getBasicRemote().sendText("false");
+				
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+		}*/
+		return ""+message;
      }
 
 	
@@ -109,26 +105,55 @@ public class Serveur extends Thread{
 	public void handleError(Throwable t) {
 		t.printStackTrace();
 	}
-
-	public void gerer_requete(String message) {
+/*
+	public boolean gerer_requete(String message) {
 		System.out.println("Requete reçu");
 		System.out.println(message);
 		Connexion c = new Connexion();
 		JSONObject liste = new JSONObject(message);
 		String requete = liste.getString("requete");
+		
+		String pseudo;
+		String password;
+		String email;
+		Utilisateur user;
 		switch(requete) {
 			case "inscription":
-				String password = liste.getString("password").toString();
-				String pseudo = liste.getString("pseudo").toString();
-				String email = liste.getString("email").toString();
-				Utilisateur user = new Utilisateur(4, pseudo, email, pseudo, 0, password);
+				password = liste.getString("password").toString();
+				pseudo = liste.getString("pseudo").toString();
+				email = liste.getString("email").toString();
+				user = new Utilisateur(4, pseudo, email, pseudo, 0, password);
 				
-				c.Inscription(user);
-				break;
+				if (c.Inscription(user)) {
+					c.close();
+					return true;
+				}
+				else {
+					c.close();
+					return false;
+				}
+				
+			case "connexion":
+				
+				pseudo = liste.getString("pseudo").toString();
+				password = liste.getString("password").toString();
+				
+				user = new Utilisateur(4, pseudo, pseudo, pseudo, 0, password);
+				
+				if (c.Authentification(user)) {
+					c.close();
+					return true;
+				}
+				else {
+					
+					c.close();
+					return false;
+				}
 		}
 		
 		c.close();
+		return false;
 	}
-
+*/
 	
 }
