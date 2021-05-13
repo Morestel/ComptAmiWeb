@@ -8,6 +8,11 @@ public class GestionMessages {
 	String id_event;
 	List<Message> listeMessages = new ArrayList<>();
 	
+	public List<Message> getListeMessages() {
+		return listeMessages;
+	}
+
+	
 	public void addMessage(Message m) {
 		listeMessages.add(m);
 	}
@@ -21,6 +26,7 @@ public class GestionMessages {
 		int event = Integer.parseInt(id_event);
 		Connexion c = new Connexion();
 		c.ChargerMessagerie(event);
+		setListeMessages(c.ChargerMessagerie(event));
 	}
 
 	public String getId_event() {
@@ -30,4 +36,9 @@ public class GestionMessages {
 	public void setId_event(String id_event) {
 		this.id_event = id_event;
 	}
+	
+	public void setListeMessages(List<Message> listeMessages) {
+		this.listeMessages = listeMessages;
+	}
+
 }

@@ -7,16 +7,16 @@ import java.util.List;
 
 public class Connexion {
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    /*
+    
     private final String JDBC_CONNEXION = "jdbc:mysql://localhost:4456/mt05697s";
     private final String JDBC_USER = "mt05697s";
     private final String JDBC_PWD = "3RSHLEL7";
-    */
     
+    /*
     private final String JDBC_CONNEXION = "jdbc:mysql://localhost/mydb";
     private final String JDBC_USER = "root";
     private final String JDBC_PWD = "";
-    
+    */
     Connection c;
     private Statement ts;
 
@@ -160,12 +160,13 @@ public class Connexion {
     }
 
     public void ChargerMessage(Evenement event, PageMessagerie pMessagerie){
-        String query = "SELECT Contenu, Id_user, Date_envoie FROM Messagerie WHERE Id_event = " + event.getId();
+        String query = "SELECT Contenu, Id_user, Date_envoie, Nom FROM Messagerie, Utilisateur WHERE Id_event = " + event.getId() + " AND Messagerie.Id_user = Utilisateur.Id";
         try(ResultSet resultat = ts.executeQuery(query);){
             while(resultat.next()){
                 Message mess = new Message(resultat.getString(1),
                                             Integer.parseInt(resultat.getString(2)),
-                                            resultat.getString(3)
+                                            resultat.getString(3),
+                                            resultat.getString(4)
                 );
                 pMessagerie.AddMessage(mess);
             }
@@ -176,12 +177,13 @@ public class Connexion {
     
     public List<Message> ChargerMessagerie(int id_event){
     	List<Message> m = new ArrayList<>();
-    	String query = "SELECT Contenu, Id_user, Date_envoie FROM Messagerie WHERE Id_event = " + id_event;
+    	String query = "SELECT Contenu, Id_user, Date_envoie, Nom FROM Messagerie, Utilisateur WHERE Id_event = " + id_event + " AND Messagerie.Id_user = Utilisateur.Id";
         try(ResultSet resultat = ts.executeQuery(query);){
             while(resultat.next()){
                 Message mess = new Message(resultat.getString(1),
                                             Integer.parseInt(resultat.getString(2)),
-                                            resultat.getString(3)
+                                            resultat.getString(3),
+                                            resultat.getString(4)
                 );
                 m.add(mess);
             }

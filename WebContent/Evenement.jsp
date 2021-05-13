@@ -4,6 +4,7 @@
     <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@page import="compteami.GestionMessages" %>
+    <%@page import="compteami.Message" %>
     
     <!-- UseBean -->
    	<jsp:useBean id="listeMessage" class="compteami.GestionMessages" scope="page"></jsp:useBean>
@@ -19,21 +20,30 @@
 <body>
 
 <c:import url="header.html" />
-<%! String id_evenement; %>
- 
- 
-	<jsp:useBean id="listMessage" class="compteami.GestionMessages" ></jsp:useBean>
+  
+	
 	<c:if test="${ not empty param.event}">
-	<c:set target="${listMessage}" property="id_event" value="${ param.event }" />
+	<c:set target="${listeMessage}" property="id_event" value="${ param.event }" />
 	<% 
-	listMessage.loadMessage(listMessage.getId_event());
+	listeMessage.loadMessage(listeMessage.getId_event());
+	
 	%>
+		
+	
 	</c:if>
 	<c:if test="${empty param.event }">
-	<p>Y'a r</p>
+	<%
+	
+	String raison = "Page d'évènement non trouvée";
+	session.setAttribute("raison", raison);
+	response.sendRedirect("erreur.jsp");
+	
+	%>
 	</c:if>
   
-  
+  <% for (Message m : listeMessage.getAll()) { %>
+	   [<%= m.getDate() %>] <%= m.getPseudo() %> : <%= m.getMessage() %> <br/>
+	<% } %>
 
 
 
