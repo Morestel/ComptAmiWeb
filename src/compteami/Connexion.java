@@ -48,20 +48,16 @@ public class Connexion {
      */
     public boolean Inscription(Utilisateur user){
         if (!this.Authentification(user)){ // On empÃªche que deux personnes ayant les mÃªmes infos s'inscrivent 
-            String requete = "INSERT INTO `utilisateur` (`Prenom`, `Nom`, `Password`, `est_admin`) VALUES (" + 
-                                user.getPrenom() + "," + 
-                                user.getNom() +  "," +
-                                user.getPassword() +  "," + 
-                                user.getAdmin() + ")";
-            String query = "INSERT INTO Utilisateur (Prenom, Nom, Mail, Password, est_admin) VALUES (?, ?, ?, ?, ?)";
+
+            String query = "INSERT INTO Utilisateur (Pseudo, Mail, Password, est_admin) VALUES ( ?, ?, ?, ?)";
 
             try(PreparedStatement ps = c.prepareStatement(query);){
-                ps.setString(1, user.getPrenom());
-                ps.setString(2, user.getNom());
-                ps.setString(3, user.getMail());
-                ps.setString(4, user.getPassword());
+           
+                ps.setString(1, user.getPseudo());
+                ps.setString(2, user.getMail());
+                ps.setString(3, user.getPassword());
                 String ad = String.valueOf(user.getAdmin());
-                ps.setString(5, ad);
+                ps.setString(4, ad);
                 ps.executeUpdate();
             }catch(SQLException e){
                 e.printStackTrace();
@@ -80,11 +76,10 @@ public class Connexion {
         try(ResultSet resultat = ts.executeQuery(query);){
             while(resultat.next()){ 
                 // Stockage des informations
-                String prenom = resultat.getString(2);
-                String nom = resultat.getString(3);
-                String password = resultat.getString(4);
+                String pseudo = resultat.getString(2);
+                String password = resultat.getString(3);
                 // Comparaison
-                if (prenom.equals(user.getPrenom()) && nom.equals(user.getNom()) && password.equals(user.getPassword())){
+                if (pseudo.equals(user.getPseudo()) && password.equals(user.getPassword())){
                     return true; // On a trouvÃ© une correspondance
                 }
             }
@@ -101,7 +96,7 @@ public class Connexion {
      */
     public void Creer_Event(Evenement e){
             String query = "INSERT INTO Evenement (Intitule, Description, Budget, Start, End) VALUES (?, ?, ?, ?, ?)";
-
+            
             try(PreparedStatement ps = c.prepareStatement(query);){
                 ps.setString(1, e.getIntitule());
                 ps.setString(2, e.getTexte());
@@ -113,6 +108,51 @@ public class Connexion {
             }catch(SQLException ex){
                 ex.printStackTrace();
             }
+    }
+    
+    /**
+     * Ajoute un participant à un évènement
+     * @param user Utilisateur qui participe
+     * @param e Evenement auquel il participe
+     */
+    public void Participe(String id_user, Evenement e){
+        String query = "INSERT INTO Participe (Id_event, Id_user) VALUES (?, ?)";
+        try(PreparedStatement ps = c.prepareStatement(query);){
+            String Id_event = String.valueOf(e.getId());
+            String Id_user = String.valueOf(id_user);
+            ps.setString(1, Id_event);
+            ps.setString(2, Id_user);
+            ps.executeUpdate();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void Participe(int id_user, String id_event) {
+    	String query = "INSERT INTO Participe (Id_event, Id_user) VALUES (?, ?)";
+        try(PreparedStatement ps = c.prepareStatement(query);){
+            ps.setString(1, id_event);
+            ps.setInt(2, id_user);
+            ps.executeUpdate();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    	
+    }
+    
+    public int trouverId(String pseudo) {
+    	String query = "SELECT Id FROM Utilisateur WHERE pseudo = "+ pseudo; 
+    	try(ResultSet resultat = ts.executeQuery(query);){
+            int id = 0;
+            while(resultat.next()){ 
+                id = Integer.parseInt(resultat.getString(1));
+            }
+            return id;
+        }catch(SQLException e){
+            System.out.println("N'existe pas");
+        	return 0;
+            
+        }
     }
 
     /**
@@ -177,7 +217,7 @@ public class Connexion {
     
     public List<Message> ChargerMessagerie(int id_event){
     	List<Message> m = new ArrayList<>();
-    	String query = "SELECT Contenu, Id_user, Date_envoie, Nom FROM Messagerie, Utilisateur WHERE Id_event = " + id_event + " AND Messagerie.Id_user = Utilisateur.Id";
+    	String query = "SELECT Contenu, Id_user, Date_envoie, Pseudo FROM Messagerie, Utilisateur WHERE Id_event = " + id_event + " AND Messagerie.Id_user = Utilisateur.Id";
         try(ResultSet resultat = ts.executeQuery(query);){
             while(resultat.next()){
                 Message mess = new Message(resultat.getString(1),
@@ -192,6 +232,24 @@ public class Connexion {
         }
     	return m;
     	
+    }
+    
+    /**
+     * Charge tous les pseudos dans une arraylist
+     * @return L'arraylist de tous les pseudos
+     */
+    public ArrayList<String> ChargerPseudo(){
+    	ArrayList<String> m = new ArrayList<>();
+    	String query = "SELECT Pseudo FROM Utilisateur";
+        try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){
+                String ps = resultat.getString(1);
+                m.add(ps);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return m;
     }
 
     public void InsererMessage(Evenement event, Message mess){

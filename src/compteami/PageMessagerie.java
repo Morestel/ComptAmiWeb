@@ -59,7 +59,7 @@ public class PageMessagerie extends JPanel implements Config{
                     Date date = new Date();  
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
                     String strDate = dateFormat.format(date);  
-                    Message mess = new Message(TextMessage.getText(), user.getId(), strDate, user.getNom());
+                    Message mess = new Message(TextMessage.getText(), user.getId(), strDate, user.getPseudo());
                     AddMessage(mess);
                     c.InsererMessage(event, mess);
                     TextMessage.setText("");

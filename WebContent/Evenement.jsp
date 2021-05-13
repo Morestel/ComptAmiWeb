@@ -21,7 +21,7 @@
 
 <c:import url="header.html" />
   
-	
+	<!--  Chargement liste des messages -->
 	<c:if test="${ not empty param.event}">
 	<c:set target="${listeMessage}" property="id_event" value="${ param.event }" />
 	<% 
@@ -31,6 +31,8 @@
 		
 	
 	</c:if>
+	
+	<!-- Redirection si on tente d'accéder à cette page sans paramètre -->
 	<c:if test="${empty param.event }">
 	<%
 	
@@ -41,13 +43,21 @@
 	%>
 	</c:if>
   
+  
+  <!-- Affichage de la liste de messages -->
   <% for (Message m : listeMessage.getAll()) { %>
 	   [<%= m.getDate() %>] <%= m.getPseudo() %> : <%= m.getMessage() %> <br/>
 	<% } %>
-
-
-
+	
+	<!--  Ajout d'un participant à l'évènement -->
+	<form onsubmit="ajouter_participant(${param.event})" name ="participant" method="get" class="box_form" >
+		<input type="text" id="ajout" name="ajout" required/>
+		<input type="submit" class="bouton_valid" title="Ajouter" value="Ajouter">
+	</form>
+	
 <c:import url="footer.html" />
 
+
+<script type="text/javascript" src="js/scriptv2.js"></script>
 </body>
 </html>

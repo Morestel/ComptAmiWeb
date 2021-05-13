@@ -7,6 +7,9 @@ function connectToWebSocket(){
 		console.log('WebSocket Error ', error);
 		alert('WebSocket Error ', error);
 	};
+	ws.onclose = function(){
+		ws.close();
+	}
 
 
 }
@@ -39,7 +42,19 @@ function valider_connexion(){
 	send_connexion(pseudo, password);
 }
 
+function valider_creerEvent(Id_user){
+	var intitule = document.creer_event.intitule.value;
+	var description = document.creer_event.description.value;
+	var budget = document.creer_event.budget.value;
+	var start = document.creer_event.start.value;
+	var end = document.creer_event.start.value;
+	send_event(intitule, description, budget, start, end, Id_user);
+}
 
+function ajouter_participant(id_event){
+	var pseudo = document.participant.ajout.value;
+	send_participant(pseudo, id_event);
+}
 function send_connexion(pseudo, password){
 	var data = {"requete":"connexion", "pseudo":pseudo, "password":password};
 	data = JSON.stringify(data);
@@ -52,6 +67,18 @@ function send_connexion(pseudo, password){
 
 function send_inscription(pseudo, email, password){
 	var data = {"requete":"inscription","pseudo":pseudo,"email":email, "password":password};
+    data = JSON.stringify(data);
+    ws.send(data);
+}
+
+function send_event(intitule, description, budget, start, end, id_user){
+	var data = {"requete":"creation_event", "intitule":intitule, "description":description, "budget":budget, "start":start, "end":end, "id_user": id_user};
+	data = JSON.stringify(data);
+	ws.send(data);
+}
+
+function send_participant(pseudo, id_event){
+	var data = {"requete":"participant","pseudo":pseudo, "event":id_event};
     data = JSON.stringify(data);
     ws.send(data);
 }

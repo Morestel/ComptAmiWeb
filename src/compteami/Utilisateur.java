@@ -3,17 +3,15 @@ package compteami;
 
 public class Utilisateur{
     private int id;
-    private String nom;
-    private String prenom;
+    private String pseudo;
     private int est_admin;
     private String password;
     private String mail;
     
-    public Utilisateur(int id, String nom, String mail, String prenom, int admin, String password) {
+    public Utilisateur(int id, String pseudo, String mail, int admin, String password) {
         this.setId(id);
-        this.setNom(nom);
+        this.setPseudo(pseudo);
         this.setMail(mail);
-        this.setPrenom(prenom);
         this.setAdmin(admin);
         this.setPassword(password);
     }
@@ -42,20 +40,12 @@ public class Utilisateur{
         this.est_admin = admin;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getPseudo() {
+        return pseudo;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public int getId() {

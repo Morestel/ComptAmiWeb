@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import org.json.JSONObject;
+import java.sql.Date;
 
 
 
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 @ServerEndpoint("/CompteAmi")
 public class Serveur extends Thread{
 
-	static ArrayList<Utilisateur> listeUser = new ArrayList<Utilisateur>();
+	static ArrayList<String> listePseudo = new ArrayList<>();
 	static ArrayList<Session> listeSession = new ArrayList<Session>();
 	static boolean lancer = false;
 	
@@ -54,6 +55,8 @@ public class Serveur extends Thread{
 	@OnOpen
 	public synchronized void handleOpen(Session s) {
 		listeSession.add(s);
+		Connexion c = new Connexion();
+		listePseudo = c.ChargerPseudo();
 		System.out.println("Client connecté");
 		
 		if (!lancer) {
@@ -65,7 +68,7 @@ public class Serveur extends Thread{
 
 	@OnMessage
 	public String handleMessage(Session session, String message){ 
-		//gerer_requete(message);
+		gerer_requete(message);
 		System.out.println(message);
 		/*
 		if (gerer_requete(message)) {
@@ -105,7 +108,7 @@ public class Serveur extends Thread{
 	public void handleError(Throwable t) {
 		t.printStackTrace();
 	}
-/*
+
 	public boolean gerer_requete(String message) {
 		System.out.println("Requete reçu");
 		System.out.println(message);
@@ -122,7 +125,7 @@ public class Serveur extends Thread{
 				password = liste.getString("password").toString();
 				pseudo = liste.getString("pseudo").toString();
 				email = liste.getString("email").toString();
-				user = new Utilisateur(4, pseudo, email, pseudo, 0, password);
+				user = new Utilisateur(4, pseudo, email, 0, password);
 				
 				if (c.Inscription(user)) {
 					c.close();
@@ -138,7 +141,7 @@ public class Serveur extends Thread{
 				pseudo = liste.getString("pseudo").toString();
 				password = liste.getString("password").toString();
 				
-				user = new Utilisateur(4, pseudo, pseudo, pseudo, 0, password);
+				user = new Utilisateur(4, pseudo, pseudo, 0, password);
 				
 				if (c.Authentification(user)) {
 					c.close();
@@ -149,11 +152,44 @@ public class Serveur extends Thread{
 					c.close();
 					return false;
 				}
+				
+			case "creation_event":
+				String intitule = liste.getString("intitule");
+				String description = liste.getString("description");
+				int budget = Integer.parseInt(liste.getString("budget").toString());
+				Date start = Date.valueOf(liste.getString("start").toString());
+				Date end = Date.valueOf(liste.getString("end").toString());
+				String id_user =String.valueOf(liste.getInt("id_user"));
+				
+				c.Participe(id_user, new Evenement(intitule, budget, description, start, end, c));
+				
+				c.close();
+				return true;
+				
+			case "participant":
+				pseudo = liste.getString("pseudo").toString();
+				// Vérification de son existence
+				boolean trouve = false;
+				int i = 0;
+				
+				while (!trouve && i < listePseudo.size()) {
+					if (listePseudo.get(i).equals(pseudo)) {
+						trouve = true;
+					}
+					i++;
+				}
+				if (!trouve) {
+					return false;
+				}
+				int id = c.trouverId(pseudo);
+				String id_event = String.valueOf(liste.getInt("event"));
+				
+				c.Participe(id, id_event);
+				c.close();
+				return true;
 		}
 		
 		c.close();
 		return false;
-	}
-*/
-	
+	}	
 }

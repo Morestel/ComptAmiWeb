@@ -48,14 +48,14 @@
      <table>
      <c:forEach var="row" items="${listEvent.rows }">
      	<tr>
-     		<td><c:out value ="${row.Id_event}"/></td>
+     		<td><a href="Evenement.jsp?event=${row.Id_event }"><c:out value ="${row.Id_event}"/></a></td>
      		<td><%= Id_user %></td>
      </tr>
      </c:forEach>
      </table>
      
      
-	<%@include file="../header.html" %>
+	
 	<div class="main">
       <div class="main_content">
         <section class="news">
@@ -79,7 +79,10 @@
         </div>
        
       </div>
-      <input type="button" name="submit" value="Créer un évènement" onclick="self.location='www.google.fr'" target="_blank">
+      <input type="button" name="submit" value="Créer un évènement" onclick="self.location='CreerEvent.jsp'" target="_blank">
+      
+      
+      <c:import url="footer.html" />
       <script src="js/script.js"></script>
       
   </body>
