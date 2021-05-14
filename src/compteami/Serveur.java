@@ -80,6 +80,7 @@ public class Serveur extends Thread{
 		String password;
 		String email;
 		Utilisateur user;
+		
 		switch(requete) {
 			case "inscription":
 				password = liste.getString("password").toString();
@@ -115,17 +116,19 @@ public class Serveur extends Thread{
 				break;
 				
 			case "creation_event":
+				
 				String intitule = liste.getString("intitule");
 				String description = liste.getString("description");
 				int budget = Integer.parseInt(liste.getString("budget").toString());
 				Date start = Date.valueOf(liste.getString("start").toString());
 				Date end = Date.valueOf(liste.getString("end").toString());
-				String id_user =String.valueOf(liste.getInt("id_user"));
-				
-				c.Participe(id_user, new Evenement(intitule, budget, description, start, end, c));
+				String id_user = liste.getString("id_user");
+				Evenement e = new Evenement(intitule, budget, description, start, end, c);
+				c.Participe(id_user, e);
 				obj.put("reponse", "creation_event");
 				obj.put("creation_event", true);
 				break;
+				
 			case "participant":
 				pseudo = liste.getString("pseudo").toString();
 				// Vérification de son existence
@@ -150,11 +153,20 @@ public class Serveur extends Thread{
 				obj.put("reponse", "participe");
 				obj.put("participe", true);
 				break;
+				
 			case "budget":
 				int event = liste.getInt("id_event");
 				int budget2 = c.Budget(event);
 				obj.put("reponse", "budget");
 				obj.put("budget", budget2);
+				break;
+				
+			case "message":
+				int usr = Integer.parseInt(liste.getString("id_user").toString());
+				int id_evt = Integer.parseInt(liste.getString("id_event").toString());
+				String texte = liste.getString("texte");
+				c.InsererMessage(id_evt, usr, texte);
+				obj.put("reponse", "message");
 				break;
 		}
 		

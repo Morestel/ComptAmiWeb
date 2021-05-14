@@ -1,7 +1,10 @@
 package compteami;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 // import java.util.Date;
 import java.util.List;
 
@@ -267,6 +270,23 @@ public class Connexion {
            
             ps.executeUpdate();
         }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public void InsererMessage(int id_event, int id_user, String texte) {
+    	String query = "INSERT INTO Messagerie (Contenu, Date_envoie, Id_event, Id_user) VALUES (?, ?, ?, ?)";
+    	Date date = new Date();  
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        String strDate = dateFormat.format(date);  
+    	try(PreparedStatement ps = c.prepareStatement(query);){
+    		ps.setString(1, texte);
+    		ps.setString(2, strDate);
+    		ps.setInt(3,  id_event);
+    		ps.setInt(4, id_user);
+    		
+    		ps.executeUpdate();
+    	}catch(SQLException ex){
             ex.printStackTrace();
         }
     }

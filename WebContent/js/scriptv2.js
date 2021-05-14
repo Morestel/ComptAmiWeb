@@ -21,7 +21,6 @@ function connectToWebSocket(){
 			break;
 			
 		case "connexion":
-		console.log(obj.connexion);
 			if (obj.connexion == true){
 				document.querySelector("#id_pseudo").value = obj.id;
 				alert("Valide");
@@ -31,6 +30,25 @@ function connectToWebSocket(){
 				alert("Erreur saisie, veuillez recommencer");
 			}
 			break
+			
+		case "message":
+			location.reload();
+			break;
+			
+		case "participe":
+			if (obj.participe == false){
+				alert("Utilisateur inconnu");
+			}
+			break;
+			
+		case "creation_event":
+			if (obj.creation_event == true){
+				alert("Event créé");
+				setTimeout(function(){
+				document.location.href="http://localhost:8080/ComptAmiWeb/"; 
+				}, 2000);
+			}
+			break;
 		default:
 			console.log("Connait pas");
 			break;
@@ -78,7 +96,7 @@ function valider_creerEvent(Id_user){
 	var description = document.creer_event.description.value;
 	var budget = document.creer_event.budget.value;
 	var start = document.creer_event.start.value;
-	var end = document.creer_event.start.value;
+	var end = document.creer_event.end.value;
 	send_event(intitule, description, budget, start, end, Id_user);
 	recup_serv();
 }
@@ -105,6 +123,21 @@ async function recup_serv(){
 			console.log(err);
 		}
 }
+
+
+function ajouter_message(id_user, id_event){
+	var texte = document.envoieMess.messageArea.value;
+	console.log(id_event);
+	console.log(id_user);
+	send_message(id_user, id_event, texte);
+
+	recup_serv();
+}
+
+
+
+
+
 
 function send_connexion(pseudo, password){
 	var data = {"requete":"connexion", "pseudo":pseudo, "password":password};
@@ -136,3 +169,10 @@ function send_id_event(id_event){
     data = JSON.stringify(data);
     ws.onopen = () => ws.send(data);
 }
+
+function send_message(id_user, id_event, texte){
+	var data = {"requete":"message", "id_user":id_user, "id_event":id_event, "texte":texte};
+    data = JSON.stringify(data);
+    ws.send(data);
+}
+

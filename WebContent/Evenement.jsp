@@ -22,7 +22,21 @@
 
 <body onload="demander_budget(${param.event})">
 
-<c:import url="header.html" />
+<% ServletContext context = request.getSession().getServletContext();
+	   String existe_user = (String) context.getAttribute("id_pseudo"); 
+	%>
+	
+	<% 
+		if (existe_user == null || existe_user.equals("-1")){
+			String raison = "Veuillez vous connecter";
+			session.setAttribute("raison", raison);
+			response.sendRedirect("erreur.jsp");
+			
+		}
+	%>
+
+
+
   
 	<!--  Chargement liste des messages -->
 	<c:if test="${ not empty param.event}">
@@ -46,15 +60,25 @@
 	%>
 	</c:if>
   
+  
+  <%--<c:import url="header.html" />--%>
+  
   <!-- Affichage du budget -->
-   <div id="aff_budget">Budget : </div>
+   <div id="aff_budget">Budget: </div>
+   
   <!-- Affichage de la liste de messages -->
   <% for (Message m : listeMessage.getAll()) { %>
 	   [<%= m.getDate() %>] <%= m.getPseudo() %> : <%= m.getMessage() %> <br/>
 	<% } %>
 	
+	<!-- Ajouter un message -->
+	<form name="envoieMess" method="post" onsubmit="ajouter_message('<%= context.getAttribute("id_pseudo")%>', '${param.event}')">
+		 <textarea id="messageArea" placeholder="Envoyer un message"></textarea>
+		 <button type="submit" name="valider" value="Envoyer">Envoyer</button>
+	</form>
+	
 	<!--  Ajout d'un participant à l'évènement -->
-	<form onsubmit="ajouter_participant(${param.event})" name ="participant" method="get" class="box_form" >
+	<form onsubmit="ajouter_participant(${param.event})" name ="participant" method="post" class="box_form" >
 		<input type="text" id="ajout" name="ajout" required/>
 		<input type="submit" class="bouton_valid" title="Ajouter" value="Ajouter">
 	</form>
