@@ -15,11 +15,23 @@
 <body>
 <%@include file="../header.html" %>
 
+<% ServletContext context = request.getSession().getServletContext();
+	   String existe_user = (String) context.getAttribute("id_pseudo"); 
+	%>
+	
+	<% 
+		if (existe_user == null || existe_user.equals("-1")){
+			String raison = "Veuillez vous connecter";
+			session.setAttribute("raison", raison);
+			response.sendRedirect("erreur.jsp");
+			
+		}
+	%>
 
-	<form onsubmit="valider_creerEvent(<%= (String) session.getAttribute("Id_user") %>)" name ="creer_event" method="get" class="box_form" >
-     <input type="text" name="intitule" id="intitule" required>
- 	 <input type="text" name="budget" id="budget" required>
-    <textarea id="description">Insérez votre description</textarea>
+	<form onsubmit="valider_creerEvent(${existe_user})" name ="creer_event" method="get" class="box_form" >
+     <input type="text" name="intitule" id="intitule" placeholder="Intitule" required >
+ 	 <input type="text" name="budget" id="budget" placeholder="Budget initial" required>
+    <textarea id="description" placeholder="Insérez votre description"></textarea>
      <input type="date" id="start" name="start"
        value="2018-07-22"
        min="2018-01-01" max="2018-12-31">
