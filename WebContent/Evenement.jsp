@@ -64,7 +64,13 @@
   <%--<c:import url="header.html" />--%>
   
   <!-- Affichage du budget -->
-   <div id="aff_budget">Budget: </div>
+   <div id="aff_budget">Budget:<div id ="bud"></div></div>
+   
+   <!-- Changement dans le budget -->
+   <form name="payer" method="post">
+   <input type="text" id="payer" placeholder="Payer"/>
+   <div onclick="retirer('${param.event}', '<%= context.getAttribute("id_pseudo")%>')">Payer</div>
+   </form>
    
   <!-- Affichage de la liste de messages -->
   <% for (Message m : listeMessage.getAll()) { %>
@@ -80,7 +86,7 @@
 	<!--  Ajout d'un participant à l'évènement -->
 	<form onsubmit="ajouter_participant(${param.event})" name ="participant" method="post" class="box_form" >
 		<input type="text" id="ajout" name="ajout" required/>
-		<input type="submit" class="bouton_valid" title="Ajouter" value="Ajouter">
+		<input type="submit" class="bouton_valid" title="Ajouter" value="Ajouter"/>
 	</form>
 	
 <c:import url="footer.html" />

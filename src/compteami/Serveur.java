@@ -80,6 +80,8 @@ public class Serveur extends Thread{
 		String password;
 		String email;
 		Utilisateur user;
+		int id_evt;
+		int usr;
 		
 		switch(requete) {
 			case "inscription":
@@ -162,11 +164,26 @@ public class Serveur extends Thread{
 				break;
 				
 			case "message":
-				int usr = Integer.parseInt(liste.getString("id_user").toString());
-				int id_evt = Integer.parseInt(liste.getString("id_event").toString());
+				usr = Integer.parseInt(liste.getString("id_user").toString());
+				id_evt = Integer.parseInt(liste.getString("id_event").toString());
 				String texte = liste.getString("texte");
 				c.InsererMessage(id_evt, usr, texte);
 				obj.put("reponse", "message");
+				break;
+				
+			case "transaction":
+				int montant = liste.getInt("montant");
+				id_evt = Integer.parseInt(liste.getString("id_event").toString());
+				usr = Integer.parseInt(liste.getString("id_user").toString());
+				int montant_final = c.Transaction(id_evt, usr, montant);
+				obj.put("reponse", "transaction");
+				if (montant_final == -1) {
+					obj.put("validite", false);
+				}
+				else {
+					obj.put("validite", true);
+					obj.put("montant_final", montant_final);
+				}
 				break;
 		}
 		

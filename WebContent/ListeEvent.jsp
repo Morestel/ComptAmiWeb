@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
 </head>
 <body>
+
 	<c:import url="header.html" />
 	<% ServletContext context = request.getSession().getServletContext();
 	   String existe_user = (String) context.getAttribute("id_pseudo"); 

@@ -312,4 +312,34 @@ public class Connexion {
         }
     	return -1;
     }
+    
+    public int Transaction(int id_event, int id_user, int montant) {
+    	String query = "INSERT INTO Transaction (Date_transaction, Montant, Id_event, Id_user) VALUES (?, ?, ?, ?)";
+    	int montant_final = Budget(id_event) - montant;
+    	if (montant_final < 0) {
+    		return -1;
+    	}
+    	Date date = new Date();  
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        String strDate = dateFormat.format(date);  
+    	 try(PreparedStatement ps = c.prepareStatement(query);){
+
+             ps.setString(1, strDate);
+             ps.setInt(2, montant);
+             ps.setInt(3, id_event);
+             ps.setInt(4, id_user);
+            
+             ps.executeUpdate();
+         }catch(SQLException ex){
+             ex.printStackTrace();
+         }
+    	 
+    	 String query2 = "UPDATE Evenement SET budget = " + montant_final + " WHERE id = " + id_event;
+    	 try{
+             ts.executeUpdate(query2);
+         }catch(SQLException e){
+             e.printStackTrace();
+         }
+    	return montant_final;
+    }
 }

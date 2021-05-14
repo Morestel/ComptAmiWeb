@@ -17,7 +17,7 @@ function connectToWebSocket(){
 		
 		switch(obj.reponse){
 		case "budget":
-			var bd = document.querySelector("#aff_budget").innerHTML += obj.budget;
+			var bd = document.querySelector("#bud").innerHTML += obj.budget;
 			break;
 			
 		case "connexion":
@@ -47,6 +47,15 @@ function connectToWebSocket(){
 				setTimeout(function(){
 				document.location.href="http://localhost:8080/ComptAmiWeb/"; 
 				}, 2000);
+			}
+			break;
+			
+		case "transaction":
+			if (obj.validite == false){
+				alert("Erreur lors du paiement");
+			}
+			else{
+				location.reload();
 			}
 			break;
 		default:
@@ -134,7 +143,11 @@ function ajouter_message(id_user, id_event){
 	recup_serv();
 }
 
-
+function retirer(id_event, id_user){
+	var a_payer = document.querySelector("#payer").value;
+	send_payer(a_payer, id_event, id_user);
+	recup_serv();
+}
 
 
 
@@ -175,4 +188,10 @@ function send_message(id_user, id_event, texte){
     data = JSON.stringify(data);
     ws.send(data);
 }
+
+function send_payer(a_payer, id_event, id_user){
+	var data = {"requete":"transaction", "id_event":id_event, "id_user":id_user, "montant":a_payer};
+	data = JSON.stringify(data);
+	ws.send(data);
+}	
 
