@@ -1,7 +1,7 @@
 var ws;
 
 function connectToWebSocket(){
-	ws = new WebSocket("ws://localhost:8080/ComptAmiWeb/CompteAmi");
+	ws = new WebSocket(`ws://localhost:8080/ComptAmiWeb/CompteAmi`);
 	console.log("connecté");
 	ws.onerror = function (error) {
 		console.log('WebSocket Error ', error);
@@ -10,8 +10,33 @@ function connectToWebSocket(){
 	ws.onclose = function(){
 		ws.close();
 	}
-
-
+	ws.onmessage = function (e) {
+		var obj = JSON.parse(e.data);
+		console.log(e.data);
+		console.log(obj.reponse);
+		
+		switch(obj.reponse){
+		case "budget":
+			var bd = document.querySelector("#aff_budget").innerHTML += obj.budget;
+			break;
+			
+		case "connexion":
+		console.log(obj.connexion);
+			if (obj.connexion == true){
+				document.querySelector("#id_pseudo").value = obj.id;
+				alert("Valide");
+				
+			}
+			else{
+				alert("Erreur saisie, veuillez recommencer");
+			}
+			break
+		default:
+			console.log("Connait pas");
+			break;
+		}
+		
+	};
 }
 
 connectToWebSocket();
@@ -27,19 +52,25 @@ function valider(){
 		alert("Pseudo trop court");
 	}
 	
-	if (password != confirm_password){
-		alert("Password non égal (gros con)");
+	else if (password != confirm_password){
+		alert("Non concordence entre mdp");
 	}
-	if (!email.match(/[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z]+/i)) {
+	else if (!email.match(/[a-z0-9_\-\.]+@[a-z0-9_\-\.]+\.[a-z]+/i)) {
 	    alert(email + " n'est pas une adresse valide");
 	}
-	send_inscription(pseudo, email, password);
+	else{
+		send_inscription(pseudo, email, password);
+		recup_serv();
+	}
 }
 
 function valider_connexion(){
 	var pseudo = document.connexion.pseudo.value;
 	var password = document.connexion.password.value;
+	console.log(pseudo);
+	console.log(password);
 	send_connexion(pseudo, password);
+	recup_serv();
 }
 
 function valider_creerEvent(Id_user){
@@ -49,20 +80,37 @@ function valider_creerEvent(Id_user){
 	var start = document.creer_event.start.value;
 	var end = document.creer_event.start.value;
 	send_event(intitule, description, budget, start, end, Id_user);
+	recup_serv();
 }
 
 function ajouter_participant(id_event){
 	var pseudo = document.participant.ajout.value;
 	send_participant(pseudo, id_event);
+	recup_serv();
 }
+
+function demander_budget(id_event){
+	send_id_event(id_event);
+	recup_serv();
+}
+
+async function recup_serv(){
+	try{
+		let response = await fetch(document.location.href);
+		console.log(response.status);
+		if (response.status === 200){
+			let data = await response.text();
+		}
+		}catch(err){
+			console.log(err);
+		}
+}
+
 function send_connexion(pseudo, password){
 	var data = {"requete":"connexion", "pseudo":pseudo, "password":password};
 	data = JSON.stringify(data);
+	console.log(data);
 	ws.send(data);
-	ws.onmessage = function (e) {
-		console.log(e.data);
-	};
-
 }
 
 function send_inscription(pseudo, email, password){
@@ -81,4 +129,10 @@ function send_participant(pseudo, id_event){
 	var data = {"requete":"participant","pseudo":pseudo, "event":id_event};
     data = JSON.stringify(data);
     ws.send(data);
+}
+
+function send_id_event(id_event){
+	var data = {"requete":"budget","id_event":id_event};
+    data = JSON.stringify(data);
+    ws.onopen = () => ws.send(data);
 }

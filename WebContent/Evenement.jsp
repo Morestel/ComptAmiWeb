@@ -3,6 +3,7 @@
     <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page errorPage="/erreur.jsp" %>
     <%@page import="compteami.GestionMessages" %>
     <%@page import="compteami.Message" %>
     
@@ -17,7 +18,9 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="css/account.css">
 </head>
-<body>
+
+
+<body onload="demander_budget(${param.event})">
 
 <c:import url="header.html" />
   
@@ -43,7 +46,8 @@
 	%>
 	</c:if>
   
-  
+  <!-- Affichage du budget -->
+   <div id="aff_budget">Budget : </div>
   <!-- Affichage de la liste de messages -->
   <% for (Message m : listeMessage.getAll()) { %>
 	   [<%= m.getDate() %>] <%= m.getPseudo() %> : <%= m.getMessage() %> <br/>

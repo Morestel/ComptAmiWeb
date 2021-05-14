@@ -1,6 +1,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page errorPage="/erreur.jsp" %>
    <%@page import="compteami.Connexion"%> 
    <%@page import="compteami.Serveur" %>
    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
@@ -12,14 +13,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-  <script>
-      
-      function connectToWebSocket(){
-  		let ws = new WebSocket("ws://localhost:8080/ComptAmiWeb/CompteAmi");
-  	}
-  	
-  connectToWebSocket();
-      </script>
+  
     <meta charset="utf-8">
     <title>MAD LIONS</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -30,32 +24,24 @@
 	
 	String Id_userr = "1";
 	session.setAttribute("Id_user", Id_userr);
-	
 	%>
 	<%	String Id_user = (String) session.getAttribute("Id_user"); %>
 	<% String Id = "1"; %>
 	
-	<!-- Affichage de la liste des évènements concernant l'utilisateur -->
-<sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"  
-     url="jdbc:mysql://localhost:4456/mt05697s"  
-     user="mt05697s"  password="3RSHLEL7"/> 
-     <sql:query var="listEvent" dataSource="${db }">
-     SELECT Id_event 
-     FROM Participe
-     WHERE Id_user = "<c:out value="${Id_user}"/>"
-     </sql:query>
-     
-     <table>
-     <c:forEach var="row" items="${listEvent.rows }">
-     	<tr>
-     		<td><a href="Evenement.jsp?event=${row.Id_event }"><c:out value ="${row.Id_event}"/></a></td>
-     		<td><%= Id_user %></td>
-     </tr>
-     </c:forEach>
-     </table>
-     
-     
-	
+	<% ServletContext context = request.getSession().getServletContext(); %>
+	<%=
+	context.getAttribute("id_pseudo") 
+	%>
+	<c:if test="${not empty param.id_pseudo or param.id_pseudo > -1 }">
+		<c:catch var="donner_id">
+			<c:set var="id_pseudo" value="${param.id_pseudo }" scope = "application"></c:set>
+		</c:catch>
+	     
+	     ${donner_id.message }
+	  	<p>TEST</p>
+	  	<c:out value="${donner_id.message }" default = ""/>
+  	</c:if>
+  	
 	<div class="main">
       <div class="main_content">
         <section class="news">
@@ -69,7 +55,7 @@
                     <div class="filtre"></div>
                   </div>
                   <div class="news-box-text"><p>Il y a <%= Serveur.getListeSession().size() %> utilisateur(s)</p>
-                  <p><%= Id %></p></div>
+                  <p>${param.id_pseudo}</p></div>
                   
                 </article>
               </a>
@@ -83,7 +69,7 @@
       
       
       <c:import url="footer.html" />
-      <script src="js/script.js"></script>
+      <script src="js/scriptv2.js"></script>
       
   </body>
   

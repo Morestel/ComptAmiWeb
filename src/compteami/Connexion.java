@@ -77,7 +77,8 @@ public class Connexion {
             while(resultat.next()){ 
                 // Stockage des informations
                 String pseudo = resultat.getString(2);
-                String password = resultat.getString(3);
+                String password = resultat.getString(4);
+               
                 // Comparaison
                 if (pseudo.equals(user.getPseudo()) && password.equals(user.getPassword())){
                     return true; // On a trouvé une correspondance
@@ -141,16 +142,17 @@ public class Connexion {
     }
     
     public int trouverId(String pseudo) {
-    	String query = "SELECT Id FROM Utilisateur WHERE pseudo = "+ pseudo; 
+    	String query = "SELECT Id FROM Utilisateur WHERE pseudo = '"+ pseudo + "' "; 
     	try(ResultSet resultat = ts.executeQuery(query);){
-            int id = 0;
-            while(resultat.next()){ 
-                id = Integer.parseInt(resultat.getString(1));
+            int id = -1;
+            
+            while(resultat.next()){
+            	id = Integer.parseInt(resultat.getString(1));
             }
             return id;
         }catch(SQLException e){
-            System.out.println("N'existe pas");
-        	return 0;
+        	e.printStackTrace();
+        	return -1;
             
         }
     }
@@ -276,5 +278,18 @@ public class Connexion {
     	}catch(SQLException e) {
     		
     	}
+    }
+    
+    public int Budget(int id_event) {
+    	String query = "SELECT budget FROM Evenement WHERE Id = " + id_event;
+    	try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){
+                int bd = resultat.getInt(1);
+                return bd;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return -1;
     }
 }
