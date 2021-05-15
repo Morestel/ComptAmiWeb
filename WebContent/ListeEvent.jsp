@@ -35,10 +35,10 @@
 	<sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"  
      url="jdbc:mysql://localhost:4456/mt05697s"  
      user="mt05697s"  password="3RSHLEL7"/> 
-     <sql:query var="listEvent" dataSource="${db }">
+     <sql:query var="listEvent" dataSource="${db}">
      SELECT Id_event 
      FROM Participe
-     WHERE Id_user = "<c:out value="${Id_user}"/>"
+     WHERE Id_user = <%= existe_user %>
      </sql:query>
      
      <table>

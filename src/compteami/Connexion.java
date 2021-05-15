@@ -132,6 +132,11 @@ public class Connexion {
         }
     }
     
+    /**
+     * Insertion dans table participe
+     * @param id_user 
+     * @param id_event
+     */
     public void Participe(int id_user, String id_event) {
     	String query = "INSERT INTO Participe (Id_event, Id_user) VALUES (?, ?)";
         try(PreparedStatement ps = c.prepareStatement(query);){
@@ -144,6 +149,22 @@ public class Connexion {
     	
     }
     
+    public boolean Participation(int id_user, int id_event) {
+    	String query = "SELECT * FROM Participe WHERE Id_user = '"+ id_user + "' " + "AND Id_event = '" + id_event + "'"; 
+    	try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){
+            	return true;
+            }
+        }catch(SQLException e){
+        	e.printStackTrace();    
+        }
+    	return false;
+    }
+    /**
+     * Trouve id en fonction d'un pseudo
+     * @param pseudo
+     * @return id à retourner
+     */
     public int trouverId(String pseudo) {
     	String query = "SELECT Id FROM Utilisateur WHERE pseudo = '"+ pseudo + "' "; 
     	try(ResultSet resultat = ts.executeQuery(query);){
@@ -175,6 +196,11 @@ public class Connexion {
         }
     }
 
+    /**
+     * 
+     * @param event
+     * @return id evenement
+     */
     public int RetournerIdEvent(Evenement event){
         String query = "SELECT Id FROM Evenement WHERE Intitule = '" + event.getIntitule() + "' " +
                         "AND Description = '" + event.getTexte() + "' " +
@@ -195,6 +221,10 @@ public class Connexion {
         return 0;
     }
 
+    /**
+     * Modifie le budget dans bdd
+     * @param event
+     */
     public void UpdateBudget(Evenement event){
         String query = "UPDATE Evenement SET budget = " + event.getBudget() + " WHERE id = " + event.getId();
         try{
@@ -257,6 +287,56 @@ public class Connexion {
     	return m;
     }
 
+    /**
+     * Charge des évènements dans une arraylist
+     * @return
+     */
+    public ArrayList<Evenement> ChargerEvent(){
+    	ArrayList<Evenement> e = new ArrayList<>();
+    	String query = "SELECT * FROM Evenement";
+    	try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){                
+            	String intitule = resultat.getString(2);
+                String texte = resultat.getString(3);
+                int montant = resultat.getInt(4);
+                java.sql.Date start = resultat.getDate(5);
+                java.sql.Date end = resultat.getDate(6);
+                Evenement event = new Evenement(intitule, montant, texte, start, end);
+                event.setId(resultat.getInt(1));
+                e.add(event);
+            }
+        }catch(SQLException e1){
+            e1.printStackTrace();
+        }	
+    	return e;
+    }
+    
+    
+    public ArrayList<Utilisateur> ChargerUtilisateur(){
+    	ArrayList<Utilisateur> u = new ArrayList<>();
+    	String query = "SELECT Id, Pseudo, Password, est_admin, Mail FROM Utilisateur";
+    	try(ResultSet resultat = ts.executeQuery(query);){
+            while(resultat.next()){                
+            	String pseudo = resultat.getString(2);
+            	String password = resultat.getString(3);
+                int admin = resultat.getInt(4);
+                String mail = resultat.getString(5);
+                Utilisateur user = new Utilisateur(pseudo, mail, admin, password);
+                user.setId(resultat.getInt(1));
+                u.add(user);
+            }
+        }catch(SQLException e1){
+            e1.printStackTrace();
+        }	
+    	return u;
+    }
+    
+    /**
+     * Insère un message dans un évènement
+     * @param event
+     * @param mess
+     */
+    
     public void InsererMessage(Evenement event, Message mess){
         String query = "INSERT INTO Messagerie (Contenu, Date_envoie, Id_event, Id_user) VALUES (?, ?, ?, ?)";
         try(PreparedStatement ps = c.prepareStatement(query);){

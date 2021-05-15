@@ -34,6 +34,9 @@ public class Serveur extends Thread{
 		final int PORT = 8001;
 		try {
         ServerSocket server = new ServerSocket(PORT);
+        Thread envoie_mail = new Thread(new EnvoieMail());
+		envoie_mail.start();
+
         System.out.println("En attende de client...");
         while(true){
             Socket s = server.accept();

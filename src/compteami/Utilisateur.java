@@ -16,6 +16,13 @@ public class Utilisateur{
         this.setPassword(password);
     }
 
+    public Utilisateur(String pseudo, String mail, int admin, String password) {
+        this.setPseudo(pseudo);
+        this.setMail(mail);
+        this.setAdmin(admin);
+        this.setPassword(password);
+    }
+    
     public String getMail() {
         return mail;
     }

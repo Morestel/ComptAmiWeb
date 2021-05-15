@@ -8,7 +8,7 @@ import javax.mail.internet.*;
 import javax.mail.*;
 
 public class Evenement {
-    private final int id;
+    private int id;
     private String intitule;
     private int budget;
     private GestionMessages gestionnaire_message;
@@ -18,6 +18,15 @@ public class Evenement {
     private Date end;
     private Connexion c;
     
+    /**
+     * Constructeur
+     * @param intitule
+     * @param montant
+     * @param texte
+     * @param start
+     * @param end
+     * @param c
+     */
     public Evenement(String intitule, int montant, String texte, Date start, Date end, Connexion c){
         this.setBudget(montant);
         this.texte = texte;
@@ -28,8 +37,26 @@ public class Evenement {
         c.Creer_Event(this);
         this.id = c.RetournerIdEvent(this);
     }
+    
+    /**	
+     * Constructeur
+     * @param intitule
+     * @param montant
+     * @param texte
+     * @param start
+     * @param end
+     */
+    public Evenement(String intitule, int montant, String texte, Date start, Date end){
+    	super();
+        this.setBudget(montant);
+        this.texte = texte;
+        this.intitule = intitule;
+        this.start = start;
+        this.end = end;
+    }
 
-    /**
+
+	/**
      * L'utilisateur paye afin de participer à l'évènement
      * @param montant Montant qu'il a payé
      */
@@ -97,5 +124,9 @@ public class Evenement {
     public void setC(Connexion c) {
         this.c = c;
     }
+    
+    public void setId(int id) {
+		this.id = id;
+	}
 
 }
