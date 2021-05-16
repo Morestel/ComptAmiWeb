@@ -28,7 +28,7 @@ public class EnvoieMail implements Runnable{
 				java.sql.Date date_fin = e.getEnd();
 				java.sql.Date date_jour = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 				if (date_fin.before(date_jour) && e.getBudget() != 0) { // Date fin d'évènement dépassée
-					String message = "Bonjour, nous vous rappelons qu'un évènement auquel vous participez n'est pas fini d'être rembourser. Montant restant = " + e.getBudget() + ".";
+					String message = "Bonjour, nous vous rappelons qu'un évènement auquel vous participez n'est pas fini d'être rembourser. Montant restant = " + e.getBudget() + "€.";
 					for (Utilisateur u : util) {
 						if (c.Participation(u.getId(), e.getId())) { // Il participe
 							Mail m = new Mail(u.getMail(), titre, message);

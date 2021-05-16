@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Connexion</title>
 <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="stylesheet" type="text/css" href="../css/account.css">
 </head>
@@ -23,15 +23,18 @@
   
     <div class="user-box"><input type="password" name="password" id="password"  minlength="6" title="6 caractère minimum" required><label for="password">MOT DE PASSE</label></div>
      <input type="hidden" name="id_pseudo" id="id_pseudo" value="-1"></input>
-   	<div id="Vérifier" onclick="valider_connexion()">Vérification</div>
+   	<div id="Vérifier" class="verif" onclick="valider_connexion()">Vérification</div>
     <input id ="valid" type="submit" class="bouton_valid" title="Connexion" value="Se connecter">
 	
     </form>
     
-    <a class="alt_co" href="http://localhost:8080/ComptAmiWeb/account/Inscription.jsp">Créer un compte</a></div>
+    <a class="alt_co" href="http://localhost:8080/ComptAmiWeb/account/Inscription.jsp">Créer un compte</a>
+    </div>
     
     <% System.out.println(request.getParameter("id_pseudo")); %>
+    
+    <c:import url="../footer.html" />
 </body>
 
-<script type="text/javascript" src="../js/scriptv2.js"></script>
+<script type="text/javascript" src="../js/script.js"></script>
 </html>

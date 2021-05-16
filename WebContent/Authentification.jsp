@@ -35,5 +35,7 @@
 	</div>
       </div>
     </div>
+    
+    <c:import url="footer.html" />
   </body>
 </html>

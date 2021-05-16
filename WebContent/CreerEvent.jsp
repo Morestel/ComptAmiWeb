@@ -30,26 +30,46 @@
 
 	<c:import url="header.html" />
 	
-
-	<form name ="creer_event" method="post" class="box_form" >
-     <input type="text" name="intitule" id="intitule" placeholder="Intitule" required >
- 	 <input type="text" name="budget" id="budget" placeholder="Budget initial" required>
-    <textarea id="description" placeholder="Insérez votre description"></textarea>
-     <input type="date" id="start" name="start"
-       value="2018-07-22"
-       min="2018-01-01" max="2018-12-31">
-    <input type="date" id="end" name="end"
-       value="2018-07-22"
-       min="2018-01-01" max="2018-12-31">
-      <div onclick = "valider_creerEvent('<%= context.getAttribute("id_pseudo")%>')">Créer</div>
-     
+	<div class="login-box">
+    <h2>Créer Event</h2>
+      
+		<form name ="creer_event" method="post" id="form" >
+		
+		<div class="user-box">
+	     <input type="text" name="intitule" id="intitule" required ><label for="intitule">INTITULE</label>
+	     </div>
+	    
+	     <div class="user-box">
+	 	 <input type="text" name="budget" id="budget" required><label for="budget">BUDGET</label>
+	 	 </div>
+	 	
+	 	 <div class="user-box">
+	    	<textarea id="description" placeholder="Insérez votre description"></textarea>
+	    </div>
+	    
+	    <div class="user-box">
+	     <input type="date" id="start" name="start"
+	       value="2021-01-01"
+	       min="2021-01-01" max="2030-01-01">
+	       </div>
+	       
+	       <div class="user-box">
+	    <input type="date" id="end" name="end"
+	       value="2021-01-01"
+	       min="2021-01-01" max="2030-01-01">
+	       </div>
+	       
+	      <div class= "verif" onclick = "valider_creerEvent('<%= context.getAttribute("id_pseudo")%>')">Créer</div>
+	     
       </form>
-
+      
+      </div>
+     
 
 
 
 <c:import url="footer.html" />
 
-<script type="text/javascript" src="js/scriptv2.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

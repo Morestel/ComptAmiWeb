@@ -30,26 +30,40 @@
 		}
 	%>
 	
-	<%= existe_user %>
+	
 	<!-- Affichage de la liste des évènements concernant l'utilisateur -->
 	<sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"  
      url="jdbc:mysql://localhost:4456/mt05697s"  
      user="mt05697s"  password="3RSHLEL7"/> 
      <sql:query var="listEvent" dataSource="${db}">
-     SELECT Id_event 
-     FROM Participe
+     SELECT Intitule, Id_event
+     FROM Participe, Evenement
      WHERE Id_user = <%= existe_user %>
+     AND Participe.Id_event = Evenement.Id
+     </sql:query>
+    
+     <sql:query var="nb_event" dataSource="${db}">
+     SELECT Count(DISTINCT Id_user) AS nb, Id_event
+     FROM Participe
+     GROUP BY Id_event
+     
      </sql:query>
      
-     <table>
-     <c:forEach var="row" items="${listEvent.rows }">
-     	<tr>
-     		<td><a href="Evenement.jsp?event=${row.Id_event }"><c:out value ="${row.Id_event}"/></a></td>
-     		<td>${param.id_pseudo}</td>
-     </tr>
-     </c:forEach>
-     </table>
-     
+    <div class="main">
+      <div class="main_content">
+     	<h1>Liste des évènements</h1>
+     		<ul>
+	     <c:forEach var="row" items="${listEvent.rows }">
+	     	<c:forEach var="col" items="${nb_event.rows}">
+	     		 <c:if test = "${row.Id_event == col.Id_event}">
+	     			<li><a href="Evenement.jsp?event=${row.Id_event}"><c:out value ="${row.Intitule}"/> (<c:out value="${col.nb}"/> participant(s))</a></li>
+	     		</c:if>
+	     	</c:forEach>
+	     </c:forEach>
+	    
+     		</ul>
+     	</div>
+     </div>
 
 	 <c:import url="footer.html" />
       <script src="js/script.js"></script>

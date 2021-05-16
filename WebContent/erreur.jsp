@@ -15,10 +15,18 @@
 <link rel="stylesheet" type="text/css" href="css/account.css">
 </head>
 <body>
-<c:import url="header.html" />
-<%	String raison = (String) session.getAttribute("raison"); %>
-${raison}
 
+<%	String raison = (String) session.getAttribute("raison"); %>
+
+<c:import url="header.html" />
+
+<div class="main">
+      <div class="main_content">
+      		<div class="erreur">
+				${raison}
+			</div>
+		</div>
+</div>
 <c:import url="footer.html" />
 
 </body>

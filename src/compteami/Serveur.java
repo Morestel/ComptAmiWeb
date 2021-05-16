@@ -159,13 +159,6 @@ public class Serveur extends Thread{
 				obj.put("participe", true);
 				break;
 				
-			case "budget":
-				int event = liste.getInt("id_event");
-				int budget2 = c.Budget(event);
-				obj.put("reponse", "budget");
-				obj.put("budget", budget2);
-				break;
-				
 			case "message":
 				usr = Integer.parseInt(liste.getString("id_user").toString());
 				id_evt = Integer.parseInt(liste.getString("id_event").toString());
