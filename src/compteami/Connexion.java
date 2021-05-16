@@ -185,11 +185,10 @@ public class Connexion {
      * Suppression d'un evenement
      * @param event Evenement a delete
      */
-    public void Delete_Event(Evenement event){
+    public void Delete_Event(int id_event){
         String query = "DELETE FROM Evenement " +
-                   "WHERE id = " + event.getId();
+                   "WHERE id = " + id_event;
         try {
-            System.out.println(event.getId());
             ts.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -250,6 +249,11 @@ public class Connexion {
         }
     }
     
+    /**
+     * Charge une messagerie
+     * @param id_event
+     * @return Liste de message
+     */
     public List<Message> ChargerMessagerie(int id_event){
     	List<Message> m = new ArrayList<>();
     	String query = "SELECT Contenu, Id_user, Date_envoie, Pseudo FROM Messagerie, Utilisateur WHERE Id_event = " + id_event + " AND Messagerie.Id_user = Utilisateur.Id";
@@ -380,6 +384,7 @@ public class Connexion {
     	}
     }
     
+    
     public int Budget(int id_event) {
     	String query = "SELECT budget FROM Evenement WHERE Id = " + id_event;
     	try(ResultSet resultat = ts.executeQuery(query);){
@@ -393,6 +398,13 @@ public class Connexion {
     	return -1;
     }
     
+    /**
+     * Etabli une transaction
+     * @param id_event
+     * @param id_user
+     * @param montant
+     * @return
+     */
     public int Transaction(int id_event, int id_user, int montant) {
     	String query = "INSERT INTO Transaction (Date_transaction, Montant, Id_event, Id_user) VALUES (?, ?, ?, ?)";
     	int montant_final = Budget(id_event) - montant;

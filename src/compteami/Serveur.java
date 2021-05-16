@@ -181,6 +181,12 @@ public class Serveur extends Thread{
 					obj.put("montant_final", montant_final);
 				}
 				break;
+				
+			case "delete":
+				id_evt = Integer.parseInt(liste.getString("id_event").toString());
+				c.Delete_Event(id_evt);
+				obj.put("reponse", "delete");
+				break;
 		}
 		
 		c.close();

@@ -56,7 +56,7 @@
 	     <c:forEach var="row" items="${listEvent.rows }">
 	     	<c:forEach var="col" items="${nb_event.rows}">
 	     		 <c:if test = "${row.Id_event == col.Id_event}">
-	     			<li><a href="Evenement.jsp?event=${row.Id_event}"><c:out value ="${row.Intitule}"/> (<c:out value="${col.nb}"/> participant(s))</a></li>
+	     			<li><a href="Evenement.jsp?event=${row.Id_event}"><c:out value ="${row.Intitule}"/> (<c:out value="${col.nb}"/> participant(s))</a>   <img onclick ="delete_event('${row.Id_event}')" src="http://localhost:8080/ComptAmiWeb/img/src/bouton_delete.png"></li>
 	     		</c:if>
 	     	</c:forEach>
 	     </c:forEach>

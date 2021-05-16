@@ -56,7 +56,7 @@ function connectToWebSocket(){
 			}
 			break;
 		default:
-			console.log("Connait pas");
+			
 			break;
 		}
 		
@@ -141,6 +141,12 @@ function retirer(id_event, id_user){
 	recup_serv();
 }
 
+function delete_event(id_event){
+	send_delete(id_event);
+	location.reload();
+}
+
+
 function send_connexion(pseudo, password){
 	var data = {"requete":"connexion", "pseudo":pseudo, "password":password};
 	data = JSON.stringify(data);
@@ -177,4 +183,10 @@ function send_payer(a_payer, id_event, id_user){
 	data = JSON.stringify(data);
 	ws.send(data);
 }	
+
+function send_delete(id_event){
+	var data = {"requete":"delete", "id_event":id_event};
+	data = JSON.stringify(data);
+	ws.send(data);
+}
 
