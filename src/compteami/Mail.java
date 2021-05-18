@@ -15,6 +15,9 @@ public class Mail {
         this.message = message;
     }
 
+    /**
+     * Envoie un mail
+     */
     public void envoyer(){
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");

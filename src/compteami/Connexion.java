@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-// import java.util.Date;
 import java.util.List;
 
 public class Connexion {
@@ -116,7 +115,7 @@ public class Connexion {
     
     /**
      * Ajoute un participant à un évènement
-     * @param user Utilisateur qui participe
+     * @param id_user Utilisateur qui participe
      * @param e Evenement auquel il participe
      */
     public void Participe(String id_user, Evenement e){
@@ -149,6 +148,12 @@ public class Connexion {
     	
     }
     
+    /**
+     * Indique si un utilisateur participe à un événement
+     * @param id_user
+     * @param id_event
+     * @return
+     */
     public boolean Participation(int id_user, int id_event) {
     	String query = "SELECT * FROM Participe WHERE Id_user = '"+ id_user + "' " + "AND Id_event = '" + id_event + "'"; 
     	try(ResultSet resultat = ts.executeQuery(query);){
@@ -182,8 +187,22 @@ public class Connexion {
     }
 
     /**
+     * Supprime un evenement
+     * @param event a delete
+     */
+    public void Delete_Event(Evenement event){
+        String query = "DELETE FROM Evenement " +
+                   "WHERE id = " + event.getId();
+        try {
+            ts.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
      * Suppression d'un evenement
-     * @param event Evenement a delete
+     * @param id_event Evenement a delete
      */
     public void Delete_Event(int id_event){
         String query = "DELETE FROM Evenement " +
@@ -228,22 +247,6 @@ public class Connexion {
         String query = "UPDATE Evenement SET budget = " + event.getBudget() + " WHERE id = " + event.getId();
         try{
             ts.executeUpdate(query);
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void ChargerMessage(Evenement event, PageMessagerie pMessagerie){
-        String query = "SELECT Contenu, Id_user, Date_envoie, Nom FROM Messagerie, Utilisateur WHERE Id_event = " + event.getId() + " AND Messagerie.Id_user = Utilisateur.Id";
-        try(ResultSet resultat = ts.executeQuery(query);){
-            while(resultat.next()){
-                Message mess = new Message(resultat.getString(1),
-                                            Integer.parseInt(resultat.getString(2)),
-                                            resultat.getString(3),
-                                            resultat.getString(4)
-                );
-                pMessagerie.AddMessage(mess);
-            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -315,7 +318,10 @@ public class Connexion {
     	return e;
     }
     
-    
+    /**
+     * Charge liste user
+     * @return
+     */
     public ArrayList<Utilisateur> ChargerUtilisateur(){
     	ArrayList<Utilisateur> u = new ArrayList<>();
     	String query = "SELECT Id, Pseudo, Password, est_admin, Mail FROM Utilisateur";
@@ -384,7 +390,11 @@ public class Connexion {
     	}
     }
     
-    
+    /**
+     * Renvoie le budget
+     * @param id_event
+     * @return
+     */
     public int Budget(int id_event) {
     	String query = "SELECT budget FROM Evenement WHERE Id = " + id_event;
     	try(ResultSet resultat = ts.executeQuery(query);){
